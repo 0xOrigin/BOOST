@@ -163,12 +163,18 @@ if [ $1 = "-l" -o $1 = "--list" ]
 then
     for load in $ws
     do
-        if curl -s --head --request GET $load | grep "HTTP" > /dev/null
+      if echo "Y" | GET -s -d -t 2 $load | grep "certificate verify failed" > /dev/null
+      then
+          echo "<li><a href="http://$load" target="_blank">$load</a></li>" >> List/html/$op.$$.html
+          echo $load >> List/txt/$op.$$.txt
+      fi
+        if ! echo "Y" | GET -s -d -t 2 $load | grep "500" > /dev/null
         then 
-        echo "<li><a href="http://$load" target="_blank">$load</a></li>" >> List/html/$op.$$.html
-        echo $load >> List/txt/$op.$$.txt
-        echo "Processing....."
+            echo "<li><a href="http://$load" target="_blank">$load</a></li>" >> List/html/$op.$$.html
+            echo $load >> List/txt/$op.$$.txt
+            echo "Processing....."
         fi
+
     done  
 
 elif [ $1 = "-c" -o $1 = "--contentspoof" ]
@@ -176,9 +182,14 @@ then
 
     for load in $ws
     do
-    if curl -s --head --request GET $load | grep "HTTP" > /dev/null 
-        then
-    if curl -s $load/It%20has%20been%20changed%20by%20a%20new%20one%20https://www.attacker.com%20so%20go%20to%20the%20new%20one%20since%20this%20one. | grep "changed" >> /dev/null
+        if echo "Y" | GET -s -d -t 2 $load | grep "certificate verify failed" > /dev/null
+          then
+              echo "<li><a href="http://$load" target="_blank">$load</a></li>" >> Contentspoofing/html/$op.$$.html
+              echo $load >> Contentspoofing/txt/$op.$$.txt
+          fi
+            if ! echo "Y" | GET -s -d -t 2 $load | grep "500" > /dev/null
+            then 
+    if echo "Y" | GET $load/It%20has%20been%20changed%20by%20a%20new%20one%20https://www.attacker.com%20so%20go%20to%20the%20new%20one%20since%20this%20one. | grep "changed" >> /dev/null
             then
             echo "<li><a href="http://$load/It%20has%20been%20changed%20by%20a%20new%20one%20https://www.attacker.com%20so%20go%20to%20the%20new%20one%20since%20this%20one." target="_blank">$load</a></li>" >> Contentspoofing/html/$op.$$.html
             echo $load >> Contentspoofing/txt/$op.$$.txt
