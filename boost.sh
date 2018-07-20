@@ -9,89 +9,89 @@ echo "
                                  By - @0xOrigin                               
 "
 echo "              "
-
-
-
-if [ $1 ]
+####################################################################### Variables ###################################################################################
+first=$1
+second=$2
+third=$3
+pro=1
+date1=`  date   +%s`
+#################################################################### Check First Parameter ##########################################################################
+if [ $first ]
 then
-        if [ $1 = "-h" -o $1 = "--help" ]
-        then
-            echo "Usage: boost.sh [OPTIONS...] <list_name> <output_name>"            
-            echo "       boost.sh [-h] Help, [-l] Domains list, [-c] Content spoofing."
-            echo "              "
-            echo "OPTIONS:"
-            echo "  -h, --help              Show this help message and Exit."
-            echo "  -l, --list              Domain list to Check the status of the site and put domains in HTML code."
-            echo "  -c, --contentspoof      Check the domains that contain Content spoofing."
-            exit
-            elif [ $1 != "-h" -a $1 != "--help" -a $1 != "-l" -a $1 != "--list" -a $1 != "-c" -a $1 != "--contentspoof" ]
-            then
-            echo "[-] Try 'boost.sh --help' for more information."
-            exit
-        fi
-else
-echo "[-] Try 'boost.sh --help' for more information."
-exit
-
-fi
-
-if [ $2 ]
-then
-    if [ -e $2  ]
+    if [ $first = "-h" -o $first = "--help" ]
     then
-    ws=`cat $2`
-    nm=`wc -l $2 | cut -d"." -f1 | cut -d" " -f1`
-    else
-    echo "[-] The File Not Found."
-    exit
+        echo "Usage: boost.sh [OPTIONS...] <list_name> <output_name>"            
+        echo "       boost.sh [-h] Help, [-l] Domains list, [-c] Content spoofing."
+        echo "              "
+        echo "OPTIONS:"
+        echo "  -h, --help              Show this help message and Exit."
+        echo "  -l, --list              Domain list to Check the status of the site and put domains in HTML code."
+        echo "  -c, --contentspoof      Check the domains that contain Content spoofing."
+        exit
+    elif [ $first != "-h" -a $first != "--help" -a $first != "-l" -a $first != "--list" -a $first != "-c" -a $first != "--contentspoof" ]
+    then
+        echo "[-] Try './boost.sh --help' for more information."
+        exit
     fi
-
 else
-    echo "[+] Please Enter Websites List:"
-    read lol
-        if [ -e $lol  ]
-        then
-        ws=`cat $lol`
-        nm=`wc -l $lol | cut -d"." -f1 | cut -d" " -f1`
-        else
+    echo "[+] Please Enter Method:"
+    read first
+    if [ $first != "-h" -a $first != "--help" -a $first != "-l" -a $first != "--list" -a $first != "-c" -a $first != "--contentspoof" ]
+    then
+        echo "[-] Try './boost.sh --help' for more information."
+        exit
+    fi
+fi
+############################################################# Check Second Parameter ###############################################################################
+if [ $second ]
+then
+    if [ -e $second  ]
+    then
+        ws=`cat $second`
+        nm=`wc -l $second | cut -d"." -f1 | cut -d" " -f1`
+    else
         echo "[-] The File Not Found."
         exit
-        fi
-fi
-
-
-if [ $3 ]
-then
-op=$3
-if [ $1 = "-l" -o $1 = "--list" ]
-    then
-        echo "[-] Will be saved in : `pwd`/Output/List/html/$op.$$.html "
-        echo "[-] Will be saved in : `pwd`/Output/List/txt/$op.$$.txt "
     fi
-if [ $1 = "-c" -o $1 = "--contentspoof" ]
-    then
-        echo "[-] Will be saved in : `pwd`/Output/Contentspoofing/html/$op.$$.html "
-        echo "[-] Will be saved in : `pwd`/Output/Contentspoofing/txt/$op.$$.txt "
-        
-    fi        
-
-
 else
-echo "[+] Please Enter Output Name:"
-read name
-op=$name
-        if [ $1 = "-l" -o $1 = "--list" ]
-            then
-                echo "[-] Will be saved in : `pwd`/Output/List/html/$op.$$.html "
-                echo "[-] Will be saved in : `pwd`/Output/List/txt/$op.$$.txt "
-            fi
-if [ $1 = "-c" -o $1 = "--contentspoof" ]
+    echo "[+] Please Enter Websites List:"
+    read second
+    if [ -e $second  ]
     then
-        echo "[-] Will be saved in : `pwd`/Output/Contentspoofing/html/$op.$$.html "
-        echo "[-] Will be saved in : `pwd`/Output/Contentspoofing/txt/$op.$$.txt "
-    fi   
+        ws=`cat $second`
+        nm=`wc -l $second | cut -d"." -f1 | cut -d" " -f1`
+    else
+        echo "[-] The File Not Found."
+        exit
+    fi
 fi
-
+echo "              "
+#################################################################### Check Third Parameter ########################################################################## 
+if [ $third ]
+then
+    if [ $first = "-l" -o $first = "--list" ]
+        then
+            echo "[-] Will be saved in : `pwd`/Output/List/html/$third.$$.html "
+            echo "[-] Will be saved in : `pwd`/Output/List/txt/$third.$$.txt "
+    elif [ $first = "-c" -o $first = "--contentspoof" ]
+        then
+            echo "[-] Will be saved in : `pwd`/Output/Contentspoofing/html/$third.$$.html "
+            echo "[-] Will be saved in : `pwd`/Output/Contentspoofing/txt/$third.$$.txt "      
+        fi        
+else
+    echo "[+] Please Enter Output Name:"
+    read third
+            if [ $first = "-l" -o $first = "--list" ]
+                then
+                    echo "[-] Will be saved in : `pwd`/Output/List/html/$third.$$.html "
+                    echo "[-] Will be saved in : `pwd`/Output/List/txt/$third.$$.txt "
+            elif [ $first = "-c" -o $first = "--contentspoof" ]
+                then
+                    echo "[-] Will be saved in : `pwd`/Output/Contentspoofing/html/$third.$$.html "
+                    echo "[-] Will be saved in : `pwd`/Output/Contentspoofing/txt/$third.$$.txt "
+                fi   
+fi
+######################################################################### Check Files ################################################################################
 if [ -d Output  ]
 then    
     cd Output
@@ -133,94 +133,117 @@ else
     mkdir List && cd List && mkdir html && mkdir txt
     cd ..
 fi
-
+####################################################################### Main Function ################################################################################
 echo "              "
-    if [ $1 = "-l" -o $1 = "--list" ]
-    then
+if [ $first = "-l" -o $first = "--list" ]
+then
     echo "#--------------Starting BOOST List TOOL at `date +"%Y-%m-%d %T %Z"`-------------#"
-    elif [ $1 = "-c" -o $1 = "--contentspoof" ]
-    then
-    echo "#--------Starting BOOST Content spoofing TOOL at `date +"%Y-%m-%d %T %Z"`-------#"
-    fi
-echo "              "
-echo "[-] WebSites:"$nm
-echo "      "
-if [ $1 = "-l" -o $1 = "--list" ]
-then
-echo "<html>" > List/html/$op.$$.html
-echo "<body>" >> List/html/$op.$$.html
-echo "<h1 align="center">BOOST List TOOL</h1>" >> List/html/$op.$$.html
-echo "<ol>" >> List/html/$op.$$.html
-elif [ $1 = "-c" -o $1 = "--contentspoof" ]
-then
-echo "<html>" > Contentspoofing/html/$op.$$.html
-echo "<body>" >> Contentspoofing/html/$op.$$.html
-echo "<h1 align="center">BOOST Content spoofing TOOL</h1>" >> Contentspoofing/html/$op.$$.html
-echo "<ol>" >> Contentspoofing/html/$op.$$.html
-fi
-
-if [ $1 = "-l" -o $1 = "--list" ]
-then
-    for load in $ws
+    echo "              "
+    echo "[-] WebSites:"$nm
+    echo "      "
+    echo "<html>" > List/html/$third.$$.html
+    echo "<body>" >> List/html/$third.$$.html
+    echo "<h1 align="center">BOOST List TOOL</h1>" >> List/html/$third.$$.html
+    echo "<ol>" >> List/html/$third.$$.html
+while true 
+do
+    while [ $pro -le $nm ]
     do
-      if echo "Y" | GET -s -d -t 2 $load | grep "certificate verify failed" > /dev/null
-      then
-          echo "<li><a href="http://$load" target="_blank">$load</a></li>" >> List/html/$op.$$.html
-          echo $load >> List/txt/$op.$$.txt
-      fi
-        if ! echo "Y" | GET -s -d -t 2 $load | grep "500" > /dev/null
-        then 
-            echo "<li><a href="http://$load" target="_blank">$load</a></li>" >> List/html/$op.$$.html
-            echo $load >> List/txt/$op.$$.txt
-            echo "Processing....."
-        fi
-
-    done  
-
-elif [ $1 = "-c" -o $1 = "--contentspoof" ]
-then
-
-    for load in $ws
-    do
-        if echo "Y" | GET -s -d -t 2 $load | grep "certificate verify failed" > /dev/null
+        for load in $ws
+        do
+          if echo "Y" | GET -s -d -t 3 $load | grep "certificate verify failed" > /dev/null
           then
-              echo "<li><a href="http://$load" target="_blank">$load</a></li>" >> Contentspoofing/html/$op.$$.html
-              echo $load >> Contentspoofing/txt/$op.$$.txt
+              echo "<li><a href="http://$load" target="_blank">$load</a></li>" >> List/html/$third.$$.html
+              echo $load >> List/txt/$third.$$.txt
+          elif echo "Y" | GET -s -d -t 3 $load | grep "hostname verification failed" > /dev/null
+          then
+              echo "<li><a href="http://$load" target="_blank">$load</a></li>" >> List/html/$third.$$.html
+              echo $load >> List/txt/$third.$$.txt
           fi
-            if ! echo "Y" | GET -s -d -t 2 $load | grep "500" > /dev/null
+
+            if ! echo "Y" | GET -s -d -t 5 $load | grep "500" > /dev/null
             then 
-    if echo "Y" | GET $load/It%20has%20been%20changed%20by%20a%20new%20one%20https://www.attacker.com%20so%20go%20to%20the%20new%20one%20since%20this%20one. | grep "changed" >> /dev/null
-            then
-            echo "<li><a href="http://$load/It%20has%20been%20changed%20by%20a%20new%20one%20https://www.attacker.com%20so%20go%20to%20the%20new%20one%20since%20this%20one." target="_blank">$load</a></li>" >> Contentspoofing/html/$op.$$.html
-            echo $load >> Contentspoofing/txt/$op.$$.txt
-            echo "Processing....."
-    fi
-    fi
+
+                echo "<li><a href="http://$load" target="_blank">$load</a></li>" >> List/html/$third.$$.html
+                echo $load >> List/txt/$third.$$.txt
+                echo -ne "                                                                    $(date -u --date @$((`date +%s` - $date1)) +%H:%M:%S)\r";
+                echo "$pro- Processing....."  
+            fi
+            let pro=pro+1 
+        done       
     done
+echo "                  "
+echo "[-] It takes $(date -u --date @$((`date +%s` - $date1)) +%H:%M:%S) seconds to Complete this Task." 
+break
+done  
+ 
+        echo "</ol>" >> List/html/$third.$$.html
+        echo "</body>" >> List/html/$third.$$.html
+        echo "</html>" >> List/html/$third.$$.html
 
-fi
+        sleep 1
+        echo "          "
 
-if [ $1 = "-l" -o $1 = "--list" ]
-then
-echo "</ol>" >> List/html/$op.$$.html
-echo "</body>" >> List/html/$op.$$.html
-echo "</html>" >> List/html/$op.$$.html
-elif [ $1 = "-c" -o $1 = "--contentspoof" ]
-then
-echo "</ol>" >> Contentspoofing/html/$op.$$.html
-echo "</body>" >> Contentspoofing/html/$op.$$.html
-echo "</html>" >> Contentspoofing/html/$op.$$.html
-fi
+        echo "#------------------------Done at `date +"%Y-%m-%d %T %Z"`-----------------------#"
+        echo "      "
+                    echo "[-] Saved in : `pwd`/Output/List/html/$third.$$.html "
+                    echo "[-] Saved in : `pwd`/Output/List/txt/$third.$$.txt "     
+        echo "          "       
+        xdg-open "List/html/$third.$$.html"
 
-    sleep 1
-    echo "          "
-    echo "#------------------------Done at `date +"%Y-%m-%d %T %Z"`-----------------------#"
-if [ $1 = "-l" -o $1 = "--list" ]
+elif [ $first = "-c" -o $first = "--contentspoof" ]
 then
-    xdg-open "List/html/$op.$$.html"
-elif [ $1 = "-c" -o $1 = "--contentspoof" ]
-then
-xdg-open "Contentspoofing/html/$op.$$.html"
-fi
+    echo "#--------Starting BOOST Content spoofing TOOL at `date +"%Y-%m-%d %T %Z"`-------#"
+    echo "              "
+    echo "[-] WebSites:"$nm
+    echo "      "
+    echo "<html>" > Contentspoofing/html/$third.$$.html
+    echo "<body>" >> Contentspoofing/html/$third.$$.html
+    echo "<h1 align="center">BOOST Content spoofing TOOL</h1>" >> Contentspoofing/html/$third.$$.html
+    echo "<ol>" >> Contentspoofing/html/$third.$$.html
+while true 
+do
+while [ $pro -le $nm ]
+do
+  for load in $ws
+  do
+            if echo "Y" | GET -s -d -t 2 $load | grep "certificate verify failed" > /dev/null
+              then
+                  echo "<li><a href="http://$load" target="_blank">$load</a></li>" >> Contentspoofing/html/$third.$$.html
+                  echo $load >> Contentspoofing/txt/$third.$$.txt
+            elif echo "Y" | GET -s -d -t 3 $load | grep "hostname verification failed" > /dev/null
+                then
+                    echo "<li><a href="http://$load" target="_blank">$load</a></li>" >> Contentspoofing/html/$third.$$.html
+                    echo $load >> Contentspoofing/txt/$third.$$.txt
+              fi
+                if ! echo "Y" | GET -s -d -t 5 $load | grep "500" > /dev/null
+                then 
+        if echo "Y" | GET $load/It%20has%20been%20changed%20by%20a%20new%20one%20https://www.attacker.com%20so%20go%20to%20the%20new%20one%20since%20this%20one. | grep "changed" >> /dev/null
+                then
+                echo "<li><a href="http://$load/It%20has%20been%20changed%20by%20a%20new%20one%20https://www.attacker.com%20so%20go%20to%20the%20new%20one%20since%20this%20one." target="_blank">$load</a></li>" >> Contentspoofing/html/$third.$$.html
+                echo $load >> Contentspoofing/txt/$third.$$.txt
+                echo -ne "                                                                    $(date -u --date @$((`date +%s` - $date1)) +%H:%M:%S)\r";
+                echo "$pro- Processing....."
+        fi
+        fi
+        let pro=pro+1
+done
+done
+        echo "                  "
+        echo "[-] It takes $(date -u --date @$((`date +%s` - $date1)) +%H:%M:%S) seconds to Complete this Task." 
+        break
+done
+        echo "</ol>" >> Contentspoofing/html/$third.$$.html
+        echo "</body>" >> Contentspoofing/html/$third.$$.html
+        echo "</html>" >> Contentspoofing/html/$third.$$.html    
+        sleep 1
+        echo "          "
+        echo "#------------------------Done at `date +"%Y-%m-%d %T %Z"`-----------------------#"
+        echo "  "
+                    echo "[-] Saved in : `pwd`/Output/Contentspoofing/html/$third.$$.html "
+                    echo "[-] Saved in : `pwd`/Output/Contentspoofing/txt/$third.$$.txt " 
+        echo "          "
+        xdg-open "Contentspoofing/html/$third.$$.html"
+fi    
+######################################################################### Main Function End ##########################################################################
 exit
-
