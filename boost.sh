@@ -76,7 +76,6 @@ then
 else
     echo -e "$lightmagenta[+]$lightgreen Please Enter Websites List$lightmagenta:$endcolor  \c"
     read second
-    echo -e "              "
     while [ -z $second ]
     do
     echo -e "$lightmagenta[-]$lightgreen The File Not Found$lightmagenta.$endcolor"
